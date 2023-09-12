@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 const Message = () => {
   return (
-    <div className="message">
+    <div className="message owner">
       <div className="messageInfo">
         <img
           src="https://images.pexels.com/photos/15861363/pexels-photo-15861363/free-photo-of-man-posing-with-black-veil.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
@@ -13,12 +13,12 @@ const Message = () => {
       <div className="messageContent">
         <p>Hello</p>
         <img
-          // src="https://images.pexels.com/photos/15861363/pexels-photo-15861363/free-photo-of-man-posing-with-black-veil.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
+          src="https://images.pexels.com/photos/15861363/pexels-photo-15861363/free-photo-of-man-posing-with-black-veil.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
           alt=""
         />
       </div>
     </div>
   );
-}
+};
 
-export default Message
+export default Message;

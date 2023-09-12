@@ -1,5 +1,21 @@
 // $lightcolor : #a7bcff;
 
+@mixin mobile {
+  @media screen and (max-width: 480px){
+    @content
+  }
+}
+@mixin tablet {
+  @media screen and (max-width: 768px){
+    @content
+  }
+}
+@mixin laptop {
+  @media screen and (max-width: 1200px){
+    @content
+  }
+}
+
 body {
   margin: 0px;
 }
@@ -41,6 +57,7 @@ body {
         border: none;
         width: 250px;
         border-bottom: 1px solid #a7bcff;
+        outline: none;
 
         &::placeholder {
           color: rgb(175, 175, 175);
@@ -96,11 +113,20 @@ body {
     height: 80%;
     display: flex;
     overflow: hidden;
+    @include mobile {
+      width: 90%;
+    }
+    @include tablet  {
+      width: 90%;
+    }
 
     .sidebar {
       flex: 1;
       border-right: 1px solid gray;
       background-color: #3e3c61;
+      @include tablet {
+        position: relative;
+      }
 
       .navbar {
         display: flex;
@@ -113,6 +139,9 @@ body {
 
         .logo {
           font-weight: bold;
+          @include tablet {
+            display: none;
+          }
         }
 
         .user {
@@ -131,10 +160,14 @@ body {
           button {
             background-color: #5d5b8d;
             color: #ddddf7;
-            padding: 8px;
-            font-size: 10px;
+            padding: 10px;
+            font-size: 12px;
             border: none;
             cursor: pointer;
+            @include tablet {
+              position: absolute;
+              bottom: 10px;
+            }
           }
         }
       }
@@ -143,8 +176,6 @@ body {
         border-bottom: 1px solid gray;
 
         .searchForm {
-
-
           input {
             background-color: transparent;
             border: none;
@@ -170,7 +201,6 @@ body {
         &:hover {
           background-color: #2f2d52;
         }
-
 
         img {
           width: 25px;
@@ -249,10 +279,34 @@ body {
           }
 
           .messageContent {
+            max-width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
 
+            p {
+              background-color: white;
+              padding: 10px;
+              border-radius: 0px 10px 10px 10px;
+              max-width: max-content;
+            }
 
             img {
               width: 50%;
+            }
+          }
+
+          &.owner {
+            flex-direction: row-reverse;
+
+            .messageContent {
+              align-items: flex-end;
+
+              p {
+                background-color: #8da4f1;
+                color: white;
+                border-radius: 10px 0px 10px 10px;
+              }
             }
           }
         }
