@@ -1,24 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, storage, db } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default function Register() {
-  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
-  const handleAdd = async (response, downloadURL, displayName, email) => {
-    await updateProfile(response.user, {
-      displayName,
-      photoURL: downloadURL,
-    });
-    await setDoc(doc(db, "users", response.user.uid), {
-      uid: response.user.uid,
-      displayName,
-      email,
-      photoURL: downloadURL,
-    });
-  }
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,33 +24,38 @@ export default function Register() {
         password
       );
 
-      if (!file) return;
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${displayName + date}`);
 
-      const storageRef = ref(storage, displayName);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        (error) => {
-          // Handle unsuccessful uploads
-          debugger;
-          console.log(error);
-          setError(true);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref)
-            .then(async (downloadURL) => {
-              debugger;
-              await handleAdd(response, downloadURL, displayName, email)
-            })
-            .catch((error) => {
-              debugger;
-              console.log(error);
+      await uploadBytesResumable(storageRef, file).then(() => {
+        getDownloadURL(storageRef).then(async (downloadURL) => {
+          try {
+            //Update profile
+            await updateProfile(response.user, {
+              displayName,
+              photoURL: downloadURL,
             });
-        }
-      );
+            //create user on firestore
+            await setDoc(doc(db, "users", response.user.uid), {
+              uid: response.user.uid,
+              displayName,
+              email,
+              photoURL: downloadURL,
+            });
+
+            //create empty user chats on firestore
+            await setDoc(doc(db, "userChats", response.user.uid), {});
+
+            navigate("/")
+
+          } catch (err) {
+            console.log(err);
+            setError(true);
+          }
+        });
+      });
     } catch (err) {
-      debugger;
+      
       console.log(err);
       setError(true);
     }
@@ -87,8 +82,10 @@ export default function Register() {
           </label>
           <button>Sign up</button>
         </form>
-        <p>Do you have a account ? Login</p>
         {error && <span>Something is wrong!!</span>}
+        <p>
+          Do you have a account ? <Link to="/login">Login</Link>
+        </p>
       </div>
     </div>
   );
