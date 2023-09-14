@@ -46,6 +46,8 @@ export default function Register() {
             //create empty user chats on firestore
             await setDoc(doc(db, "userChats", response.user.uid), {});
 
+            
+
             navigate("/")
 
           } catch (err) {
