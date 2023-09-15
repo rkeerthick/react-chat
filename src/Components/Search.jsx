@@ -38,52 +38,12 @@ const Search = () => {
   };
 
   const handleSelect = async () => {
-    // const combinedID =
-    //   currentUser.uid > user.uid
-    //     ? currentUser.uid + user.uid
-    //     : user.uid + currentUser.uid;
-    // // check for the group exist (in the database) if not create a new group
-
-    // try {
-    //   const response = await getDoc(doc(db, "chats", combinedID));
-
-    //   if (!response.exists()) {
-    //     await setDoc(doc, (db, "chats", combinedID), {
-    //       messages: [],
-    //     });
-
-    //     // create user chats
-    //     await updateDoc(doc(db, "userChats", currentUser.uid), {
-    //       [combinedID + ".userInfo"]: {
-    //         uid: user.uid,
-    //         displayName: user.displayName,
-    //         photoURL: user.photoURL,
-    //       },
-    //       [combinedID + ".date"]: serverTimestamp(),
-    //     });
-
-    //     await updateDoc(doc(db, "userChats", user.uid), {
-    //       [combinedID + ".userInfo"]: {
-    //         uid: currentUser.uid,
-    //         displayName: currentUser.displayName,
-    //         photoURL: currentUser.photoURL,
-    //       },
-    //       [combinedID + ".date"]: serverTimestamp(),
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   setError(true);
-    // }
-
-    // // create new chats
-
     const combinedId =
       currentUser.uid > user.uid
         ? currentUser.uid + user.uid
         : user.uid + currentUser.uid;
     try {
-      console.log(1);
+      
       const res = await getDoc(doc(db, "chats", combinedId));
 
       if (!res.exists()) {
@@ -106,10 +66,11 @@ const Search = () => {
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
           },
+
           [combinedId + ".date"]: serverTimestamp(),
         });
       }
-    } catch (err) { }
+    } catch (err) {}
 
     setUser(null);
     setUserName("");
