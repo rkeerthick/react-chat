@@ -11,7 +11,7 @@ const Chats = () => {
   const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
-    // const getOnSnapShot = () => {
+    const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
         setChats(doc.data());
       });
@@ -19,9 +19,11 @@ const Chats = () => {
       return () => {
         unsub();
       };
-    // };
-
+    }
+    currentUser.uid && getChats();
   }, [currentUser.uid]);
+
+  console.log(Object.entries(chats));
 
   const handleSelect = (user) => {
     console.log('clicked chats');
